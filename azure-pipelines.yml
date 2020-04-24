@@ -20,7 +20,13 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'sonarcloud'
+    organization: 'mwyrodek-github'
+    scannerMode: 'MSBuild'
+    projectKey: 'mwyrodek_mindmap-serach-cli'
+    projectName: 'mindmap-serach-cli'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -32,3 +38,8 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: SonarCloudAnalyze@1
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
