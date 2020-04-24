@@ -30,17 +30,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="CodeCoverage.Designer.cs">
-        <DesignTimeSharedInput>True</DesignTimeSharedInput>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>CodeCoverage.runsettings</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="CodeCoverage.runsettings">
-        <Generator>SettingsSingleFileGenerator</Generator>
-        <LastGenOutput>CodeCoverage.Designer.cs</LastGenOutput>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 
