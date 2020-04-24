@@ -38,8 +38,14 @@ steps:
 - task: VSTest@2
   inputs:
     testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+          **\*test*.dll
+          !**\*TestAdapter.dll
+          !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
     codeCoverageEnabled: true
     runSettingsFile: 'mindmap-search.tests/CodeCoverage.runsettings'
+
 
 - task: SonarCloudAnalyze@1
 - task: SonarCloudPublish@1
