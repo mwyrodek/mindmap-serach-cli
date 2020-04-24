@@ -10,14 +10,38 @@
     <ItemGroup>
         <PackageReference Include="AutoFixture.AutoMoq" Version="4.11.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+        <PackageReference Include="Roslynator.Analyzers" Version="2.3.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
         <PackageReference Include="xunit" Version="2.4.0" />
+        <PackageReference Include="xunit.analyzers" Version="0.10.0" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
         <PackageReference Include="coverlet.collector" Version="1.2.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\mindmap-search\mindmap-search.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="CodeCoverage.Designer.cs">
+        <DesignTimeSharedInput>True</DesignTimeSharedInput>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CodeCoverage.runsettings</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="CodeCoverage.runsettings">
+        <Generator>SettingsSingleFileGenerator</Generator>
+        <LastGenOutput>CodeCoverage.Designer.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
 </Project>
