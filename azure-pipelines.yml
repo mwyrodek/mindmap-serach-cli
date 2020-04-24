@@ -44,7 +44,7 @@ steps:
           !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     codeCoverageEnabled: true
-    runSettingsFile: 'mindmap-search.tests/CodeCoverage.runsettings'
+    runSettingsFile: 'mindmap-search/mindmap-search.tests/CodeCoverage.runsettings'
 
 
 - task: SonarCloudAnalyze@1
