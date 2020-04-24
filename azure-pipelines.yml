@@ -35,6 +35,11 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: VisualStudioTestPlatformInstaller@1
+  inputs:
+    packageFeedSelector: 'nugetOrg'
+    versionSelector: 'latestPreRelease'
+
 - task: VSTest@2
   inputs:
     testSelector: 'testAssemblies'
@@ -45,7 +50,6 @@ steps:
     searchFolder: '$(System.DefaultWorkingDirectory)'
     codeCoverageEnabled: true
     runSettingsFile: 'mindmap-search/mindmap-search.tests/CodeCoverage.runsettings'
-
 
 - task: SonarCloudAnalyze@1
 - task: SonarCloudPublish@1
