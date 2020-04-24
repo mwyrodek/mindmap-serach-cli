@@ -15,11 +15,14 @@ namespace mindmap_search.FileTypes
         private ILogger _logger;
         private string InsideFileJson = "content.json";
         private string InsideFileXml = "content.xml";
+        private  IExctrectFromArchive _archiveExctractor;
 
-        public XmindType(ILogger<XmindType> logger)
+        public XmindType(ILogger<XmindType> logger, IExctrectFromArchive archiveExctractor)
         {
             _logger = logger;
+            _archiveExctractor = archiveExctractor;
         }
+        
         public string FileExtension => "xmind";
 
         public List<MapData> ExtractData( FileInfo[] mindMaps)
@@ -29,18 +32,18 @@ namespace mindmap_search.FileTypes
             foreach (var fileInfo in mindMaps)
             {
                 _logger.LogInformation($"opening file {fileInfo.Name}");
-                using var zipToOpen = new FileStream(fileInfo.FullName, FileMode.Open);
-                using var archive = new ZipArchive(zipToOpen, ZipArchiveMode.Read);
-                string entryToGet;
+                
                 try
                 {
-                    if (HasJsonFile(archive))
+                    if(_archiveExctractor.ArchiveHasFile(fileInfo,InsideFileJson))
                     {
-                        result.Add(ParseJson(archive, fileInfo));
+                        var mapcontent = _archiveExctractor.ReadFileFromArchive(fileInfo, InsideFileJson);
+                        result.Add(ParseJson(fileInfo, mapcontent));
                     }
-                    else if (HasXmlFile(archive))
+                    else if (_archiveExctractor.ArchiveHasFile(fileInfo,InsideFileXml))
                     {
-                        result.Add(ParseXml(archive, fileInfo));
+                        var mapcontent = _archiveExctractor.ReadFileFromArchive(fileInfo, InsideFileXml);
+                        result.Add(ParseXml(fileInfo, mapcontent));
                     }
                     else
                     {
@@ -60,21 +63,10 @@ namespace mindmap_search.FileTypes
             return result;
         }
 
-        private bool HasJsonFile(ZipArchive archive)
+        private MapData ParseJson(FileInfo fileInfo, string mapContent)
         {
-            _logger.LogDebug($"Checking if file {InsideFileJson} is in map files");
-            return archive.Entries.Any(s => s.Name == InsideFileJson);
-        }
-        
-        private MapData ParseJson(ZipArchive archive, FileInfo fileInfo)
-        {
-            
-            var readmeEntry = archive.GetEntry(InsideFileJson);
-            using var reader= new StreamReader(readmeEntry.Open());
-            var readLine = reader.ReadLine();
-
             _logger.LogDebug($"extracting nodes from file {InsideFileJson}");
-            var nodesWithText = readLine.Split(",")
+            var nodesWithText = mapContent.Split(",")
                 .ToList()
                 .Where(t => t.Contains("title"));
             var searchAbleContent = new List<string>();
@@ -91,17 +83,11 @@ namespace mindmap_search.FileTypes
             return new MapData{FileName = fileInfo.Name, FullName = fileInfo.FullName, Content = searchAbleContent};
         }
         
-        private MapData ParseXml(ZipArchive archive, FileInfo fileInfo)
+        private MapData ParseXml(FileInfo fileInfo, string mapContent)
         {
-            _logger.LogTrace($"starting extracting data from {fileInfo.Name} as xml");
             
-            var readmeEntry = archive.GetEntry(InsideFileXml);
-
-            _logger.LogTrace($"starting extracting data from read entry {InsideFileXml}");
-            using var reader = new StreamReader(readmeEntry.Open());
-            var readLine = reader.ReadLine();
             XmlDocument doc = new XmlDocument();
-            doc.LoadXml(readLine);
+            doc.LoadXml(mapContent);
             var elementsByTagName = doc.GetElementsByTagName("tittle");
             var result = new List<string>();
             for (int i = 0; i < elementsByTagName.Count; i++)
@@ -113,12 +99,6 @@ namespace mindmap_search.FileTypes
             _logger.LogTrace($"finished extrating data from {fileInfo.Name}");
             
             return new MapData{FileName = fileInfo.Name, FullName = fileInfo.FullName, Content = result};
-        }
-        
-        private bool HasXmlFile(ZipArchive archive)
-        {
-            _logger.LogTrace($"Checking if file {InsideFileXml} is in map files");
-            return archive.Entries.Any(s => s.Name == InsideFileXml);
         }
 
         private string ExtratValue(string valueWithFluff)

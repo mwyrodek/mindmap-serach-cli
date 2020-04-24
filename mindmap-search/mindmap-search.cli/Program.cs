@@ -52,6 +52,7 @@ namespace mindmap_search.cli
                     services.AddScoped<IEngine, Engine.Engine>();
                     services.AddScoped<SearchFiles>();
                     services.AddScoped<SearchMaps>();
+                    services.AddScoped<IExctrectFromArchive, ExtractFromZipArchive>();
                     services.AddScoped<IMindMapType, XmindType>();
                     services.AddScoped<ExtractInfoFromMaps>();
                 });

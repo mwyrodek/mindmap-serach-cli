@@ -12,15 +12,16 @@ namespace mindmap_search.MapSearch
         private readonly  ILogger _logger;
         private List<MapData> _mapDatas;
 
-        public SearchMaps(ILogger<ExtractInfoFromMaps> logger)
+        public SearchMaps(ILogger<SearchMaps> logger)
         {
             _logger = logger;
+            _mapDatas = new List<MapData>();
         }
 
         public void LoadMapsData(List<MapData> mapDatas)
         {
             _logger.LogInformation("loading data");
-            _mapDatas = mapDatas;
+            _mapDatas.AddRange(mapDatas);
             _logger.LogInformation("Data loaded");
         }
 
