@@ -1,8 +1,9 @@
-using System.Data;
+using System;
 
 namespace mindmap_search.MapSearch
 {
     using System.Collections.Generic;
+    using System.Data;
     using System.Linq;
     using Microsoft.Extensions.Logging;
     using mindmap_search.Model;
@@ -54,7 +55,7 @@ namespace mindmap_search.MapSearch
             foreach (var mapData in this.mapsData)
             {
                 this.logger.LogDebug($"searching map {mapData.FileName} ");
-                var searchValueses = mapData.Content.Where(md => md.Contains(searchedText)).ToList();
+                var searchValueses = mapData.Content.Where(md => md.Contains(searchedText, StringComparison.Ordinal)).ToList();
                 this.logger.LogDebug($"finished map {mapData.FileName}");
                 foreach (var searchValue in searchValueses)
                 {
