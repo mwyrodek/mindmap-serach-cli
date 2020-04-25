@@ -1,45 +1,68 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Logging;
-using mindmap_search.FolderCrawl;
-using mindmap_search.Model;
+using System.Data;
 
 namespace mindmap_search.MapSearch
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.Extensions.Logging;
+    using mindmap_search.Model;
+
+    /// <summary>
+    /// Main class used for searching the mind maps
+    /// Requires loading the maps then it is possible to search.
+    /// </summary>
     public class SearchMaps
     {
-        private readonly  ILogger _logger;
-        private List<MapData> _mapDatas;
+        private readonly ILogger logger;
+        private readonly List<MapData> mapsData;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchMaps"/> class.
+        /// </summary>
+        /// <param name="logger">logger</param>
         public SearchMaps(ILogger<SearchMaps> logger)
         {
-            _logger = logger;
-            _mapDatas = new List<MapData>();
+            this.logger = logger;
+            this.mapsData = new List<MapData>();
         }
 
-        public void LoadMapsData(List<MapData> mapDatas)
+        /// <summary>
+        /// Load MindMap data to search engine
+        /// </summary>
+        /// <param name="mapsData">Maps to be searched. </param>
+        public void LoadMapsData(List<MapData> mapsData)
         {
-            _logger.LogInformation("loading data");
-            _mapDatas.AddRange(mapDatas);
-            _logger.LogInformation("Data loaded");
+            this.logger.LogInformation("loading data");
+            this.mapsData.AddRange(mapsData);
+            this.logger.LogInformation("Data loaded");
         }
 
+        /// <summary>
+        /// Search Loaded Maps for nodes cotainign given value
+        /// </summary>
+        /// <param name="searchedText">searched value</param>
+        /// <returns>resuls from maps with searched value</returns>
         public List<SearchResult> FindNodesWithValue(string searchedText)
         {
-            List<SearchResult> results = new List<SearchResult>();
-            _logger.LogInformation($"searching maps for {searchedText} there is {_mapDatas.Count} maps to search ");
-            foreach (var mapData in _mapDatas)
+            if (!this.mapsData.Any())
             {
-                _logger.LogInformation($"searching map {mapData.FileName} ");
+                throw new DataException("Search Imposible no maps has been loaded.");
+            }
+
+            List<SearchResult> results = new List<SearchResult>();
+            this.logger.LogInformation($"searching maps for {searchedText} there is {this.mapsData.Count} maps to search ");
+            foreach (var mapData in this.mapsData)
+            {
+                this.logger.LogDebug($"searching map {mapData.FileName} ");
                 var searchValueses = mapData.Content.Where(md => md.Contains(searchedText)).ToList();
-                _logger.LogInformation($"finished map {mapData.FileName}");
+                this.logger.LogDebug($"finished map {mapData.FileName}");
                 foreach (var searchValue in searchValueses)
                 {
                     results.Add(new SearchResult{FileName = mapData.FileName, FullName = mapData.FullName, Result = searchValue});
                 }
             }
-            _logger.LogInformation($"Finished searching all maps");
+
+            this.logger.LogInformation($"Finished searching all maps");
             return results;
         }
     }
