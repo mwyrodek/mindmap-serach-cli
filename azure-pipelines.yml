@@ -28,11 +28,13 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'mwyrodek_mindmap-serach-cli'
     projectName: 'mindmap-serach-cli'
-
-- task: DotNetCoreCLI@2
+- task: VSBuild@1
   inputs:
-    command: 'build'
-    projects: '$(solution)'
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    
 
 
 - task: VSTest@2
