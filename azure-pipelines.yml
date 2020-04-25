@@ -35,20 +35,14 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VisualStudioTestPlatformInstaller@1
-  inputs:
-    packageFeedSelector: 'nugetOrg'
-    versionSelector: 'latestPreRelease'
 
 - task: VSTest@2
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-          **\*test*.dll
+          **\*tests.dll
           !**\*TestAdapter.dll
           !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    vsTestVersion: '16.0'
     codeCoverageEnabled: true
     runSettingsFile: 'mindmap-search/mindmap-search.tests/CodeCoverage.runsettings'
 
