@@ -48,7 +48,7 @@ steps:
           !**\*TestAdapter.dll
           !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
-    vsTestVersion: '15.0'
+    vsTestVersion: '16.0'
     codeCoverageEnabled: true
     runSettingsFile: 'mindmap-search/mindmap-search.tests/CodeCoverage.runsettings'
 
