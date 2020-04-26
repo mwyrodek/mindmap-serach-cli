@@ -30,7 +30,7 @@ namespace mindmap_search.cli
 
                 try
                 {
-                    var myService = services.GetRequiredService<SearchCLI>();
+                    var myService = services.GetRequiredService<SearchCli>();
                     await myService.Run();
 
                     Console.WriteLine("Success");
@@ -47,7 +47,7 @@ namespace mindmap_search.cli
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddTransient<SearchCLI>();
+                    services.AddTransient<SearchCli>();
                     services.AddScoped<IEngine, Engine.Engine>();
                     services.AddScoped<ISearchFiles, SearchFiles>();
                     services.AddScoped<ISearchMaps, SearchMaps>();

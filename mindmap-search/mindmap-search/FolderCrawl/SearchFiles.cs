@@ -28,7 +28,7 @@ namespace mindmap_search.FolderCrawl
         /// Searches for maps in currect directory
         /// </summary>
         /// <param name="rootPath">adress of folder to serch.</param>
-        /// <returns>all mind maps of given format/</returns>
+        /// <returns>all mind maps of given format.</returns>
         public FileInfo[] FindAllMaps(string rootPath)
         {
             this.logger.LogInformation($"{DateTime.UtcNow} Looking for {this.mindMapType.FileExtension} files at folder {rootPath}");

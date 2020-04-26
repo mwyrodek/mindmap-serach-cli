@@ -1,7 +1,6 @@
-using System;
-
 namespace mindmap_search.MapSearch
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
@@ -59,7 +58,7 @@ namespace mindmap_search.MapSearch
                 this.logger.LogDebug($"finished map {mapData.FileName}");
                 foreach (var searchValue in searchValueses)
                 {
-                    results.Add(new SearchResult{FileName = mapData.FileName, FullName = mapData.FullName, Result = searchValue});
+                    results.Add(new SearchResult { FileName = mapData.FileName, FullName = mapData.FullName, Result = searchValue });
                 }
             }
 

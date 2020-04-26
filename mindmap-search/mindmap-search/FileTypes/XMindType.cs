@@ -19,49 +19,60 @@ namespace mindmap_search.FileTypes
         private readonly ILogger logger;
         private readonly IExctrectFromArchive archiveExctractor;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XMindType"/> class.
+        /// </summary>
+        /// <param name="logger">logger.</param>
+        /// <param name="archiveExctractor">archive extractor.</param>
         public XMindType(ILogger<XMindType> logger, IExctrectFromArchive archiveExctractor)
         {
             this.logger = logger;
             this.archiveExctractor = archiveExctractor;
         }
 
+        /// <inheritdoc/>
         public string FileExtension => "xmind";
 
-        public List<MapData> ExtractData( FileInfo[] mindMaps)
+        /// <inheritdoc/>
+        public List<MapData> ExtractData(FileInfo[] mindMaps)
         {
-            List<MapData> result = new List<MapData>();
-            logger.LogInformation($"starting extarting all deta data");
+            var result = new List<MapData>();
+            this.logger.LogInformation("starting extarting all deta data");
+            if (mindMaps == null) throw new ArgumentNullException("no files with maps provided");
+
             foreach (var fileInfo in mindMaps)
             {
-                logger.LogInformation($"opening file {fileInfo.Name}");
-                
+                this.logger.LogInformation($"opening file {fileInfo.Name}");
+
                 try
                 {
-                    if(archiveExctractor.ArchiveHasFile(fileInfo,InsideFileJson))
+                    if (this.archiveExctractor.ArchiveHasFile(fileInfo, InsideFileJson))
                     {
-                        var mapcontent = archiveExctractor.ReadFileFromArchive(fileInfo, InsideFileJson);
-                        result.Add(ParseJson(fileInfo, mapcontent));
+                        var mapContent = this.archiveExctractor.ReadFileFromArchive(fileInfo, InsideFileJson);
+                        result.Add(this.ParseJson(fileInfo, mapContent));
                     }
-                    else if (archiveExctractor.ArchiveHasFile(fileInfo,InsideFileXml))
+                    else if (this.archiveExctractor.ArchiveHasFile(fileInfo, InsideFileXml))
                     {
-                        var mapcontent = archiveExctractor.ReadFileFromArchive(fileInfo, InsideFileXml);
-                        result.Add(ParseXml(fileInfo, mapcontent));
+                        var mapContent = this.archiveExctractor.ReadFileFromArchive(fileInfo, InsideFileXml);
+                        result.Add(this.ParseXml(fileInfo, mapContent));
                     }
                     else
                     {
                         var message =
                             $"Map doesnt containt {InsideFileJson} nor {InsideFileXml} skiping file {fileInfo.Name}";
-                        logger.LogError(message);
+                        this.logger.LogError(message);
                     }
                 }
-                catch (Exception e) //todo narrow down count and types of exceptions
+                catch (Exception e)
                 {
-                    logger.LogError($"Unexpected error occured while parsing file {fileInfo} details \n {e.Message}");
+                    this.logger.LogError(
+                        $"Unexpected error occured while parsing file {fileInfo} details \n {e.Message}");
                 }
-                
-                logger.LogInformation($"getting data from inside {InsideFileJson}");
+
+                this.logger.LogInformation($"getting data from inside {InsideFileJson}");
             }
-            logger.LogInformation($"finished extracting all data data");
+
+            this.logger.LogInformation($"finished extracting all data data");
             return result;
         }
 
@@ -70,24 +81,21 @@ namespace mindmap_search.FileTypes
             logger.LogDebug($"extracting nodes from file {InsideFileJson}");
             var nodesWithText = mapContent.Split(",")
                 .ToList()
-                .Where(t => t.Contains("title"));
+                .Where(t => t.Contains("title", StringComparison.Ordinal));
             var searchAbleContent = new List<string>();
             foreach (var node in nodesWithText)
             {
-                logger.LogDebug(node);
-                var extratValue = ExtratValue(node);
-                logger.LogDebug($"Adding {extratValue} to results");
-                    
-                searchAbleContent.Add(extratValue);
-                    
+                this.logger.LogDebug(node);
+                var extractValue = this.ExtractValue(node);
+                this.logger.LogDebug($"Adding {extractValue} to results");
+                searchAbleContent.Add(extractValue);
             }
 
-            return new MapData{FileName = fileInfo.Name, FullName = fileInfo.FullName, Content = searchAbleContent};
+            return new MapData { FileName = fileInfo.Name, FullName = fileInfo.FullName, Content = searchAbleContent };
         }
-        
+
         private MapData ParseXml(FileInfo fileInfo, string mapContent)
         {
-            
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(mapContent);
             var elementsByTagName = doc.GetElementsByTagName("tittle");
@@ -97,18 +105,16 @@ namespace mindmap_search.FileTypes
                 result.Add(elementsByTagName[i].InnerText);
             }
 
+            this.logger.LogTrace($"finished extrating data from {fileInfo.Name}");
 
-            logger.LogTrace($"finished extrating data from {fileInfo.Name}");
-            
-            return new MapData{FileName = fileInfo.Name, FullName = fileInfo.FullName, Content = result};
+            return new MapData { FileName = fileInfo.Name, FullName = fileInfo.FullName, Content = result };
         }
 
-        private string ExtratValue(string valueWithFluff)
+        private string ExtractValue(string valueWithFluff)
         {
-            logger.LogTrace($"removing unnesecery info");
-            // value has format  "title":"xxxx" sp split by : is good way to take only value
+            this.logger.LogTrace("removing unnecessary info");
+            //// value has format  "title":"xxxx" sp split by : is good way to take only value
             return valueWithFluff.Split(":")[1].Trim();
-
         }
     }
 }

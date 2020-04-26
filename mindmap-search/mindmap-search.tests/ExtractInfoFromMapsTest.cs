@@ -31,7 +31,7 @@ namespace mindmap_search.Tests
             mindMapMock.Setup(x => x.ExtractData(It.IsAny<FileInfo[]>())).Returns(fakeData);
             var sut = new ExtractInfoFromMaps(logger.Object, mindMapMock.Object);
 
-            var actualData = sut.ExtartInfo(new FileInfo[2]);
+            var actualData = sut.ExtractInfo(new FileInfo[2]);
             Assert.Equal(fakeData, actualData);
         }
     }

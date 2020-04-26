@@ -42,7 +42,7 @@ namespace mindmap_search.FileTypes
             if (info == null) throw new ArgumentNullException($"File info is null");
 
             using var zipToOpen = new FileStream(info.FullName, FileMode.Open);
-            using var archive = new ZipArchive(zipToOpen, ZipArchiveMode.Read); 
+            using var archive = new ZipArchive(zipToOpen, ZipArchiveMode.Read);
 
             var readmeEntry = archive.GetEntry(fileName);
             if (readmeEntry == null) throw new FileLoadException($"{fileName} was not loaded properly");

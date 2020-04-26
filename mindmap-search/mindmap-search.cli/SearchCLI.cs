@@ -1,44 +1,48 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using mindmap_search.Engine;
-using mindmap_search.FileTypes;
-using mindmap_search.FolderCrawl;
-using mindmap_search.Model;
-
 namespace mindmap_search.cli
 {
-    public class SearchCLI
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
+    using mindmap_search.Engine;
+    using mindmap_search.Model;
+
+    /// <summary>
+    /// Console App wrapper for search engine
+    /// </summary>
+    public class SearchCli
     {
-        private readonly  ILogger _logger;
-        private readonly IEngine  _engine;
-        //private readonly string path = @"D:\\git\\mindmap-serach-cli\\testdata";
-        private readonly string path = @"D:\\git\\mindmap-serach-cli\\mindmaps-testdata";
-        private readonly Defaults _defaults;
-        
-        public SearchCLI(ILogger<SearchCLI> logger, IEngine engine, IConfiguration configuration)
+        private readonly ILogger logger;
+        private readonly IEngine engine;
+        private readonly string path;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchCli"/> class.
+        /// </summary>
+        /// <param name="logger">logger.</param>
+        /// <param name="engine">engine.</param>
+        /// <param name="configuration">configuration.</param>
+        public SearchCli(ILogger<SearchCli> logger, IEngine engine, IConfiguration configuration)
         {
-            _logger = logger;
-            _engine = engine;
-            path= configuration["Defaults:DefaultPath"];
+            this.logger = logger;
+            this.engine = engine;
+            this.path = configuration["Defaults:DefaultPath"];
         }
-        
+
         internal async Task Run()
         {
-            _logger.LogInformation("Application {applicationEvent} at {dateTime}", "Started", DateTime.UtcNow);
-            _engine.FindMaps(path);
-            //bool running = true;
-            WelcomeMessage();
+            this.logger.LogInformation("Application {applicationEvent} at {dateTime}", "Started", DateTime.UtcNow);
+            this.engine.FindMaps(this.path);
+            this.WelcomeMessage();
+
             while (true)
             {
-                PromptUser();
-                string searchQuery = GetUserQuery(); 
-                var searchResults = _engine.Search(searchQuery);
-                TempPrint(searchResults);
+                this.PromptUser();
+                string searchQuery = this.GetUserQuery();
+                var searchResults = this.engine.Search(searchQuery);
+                this.TempPrint(searchResults);
             }
         }
 
@@ -70,8 +74,8 @@ namespace mindmap_search.cli
             {
                 Console.WriteLine($"file {result.FileName,50} | conntent {result.Result,-100}");
             }
+
             Console.WriteLine("---------------------------------------------");
         }
-        
     }
 }

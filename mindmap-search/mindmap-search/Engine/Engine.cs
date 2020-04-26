@@ -37,7 +37,7 @@ namespace mindmap_search.Engine
         {
             this.logger.LogInformation($"Searching for maps in {path}");
             var findAllMaps = this.searchFiles.FindAllMaps(path);
-            var extartInfo = this.extract.ExtartInfo(findAllMaps);
+            var extartInfo = this.extract.ExtractInfo(findAllMaps);
             this.searchMaps.LoadMapsData(extartInfo);
         }
 

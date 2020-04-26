@@ -59,7 +59,7 @@ namespace mindmap_search.Tests
 
             this.sut.FindMaps(path);
 
-            this.extractMock.Verify(f => f.ExtartInfo(expectedData), Times.Once);
+            this.extractMock.Verify(f => f.ExtractInfo(expectedData), Times.Once);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace mindmap_search.Tests
             var mapsdata = this.fixture.Create<List<MapData>>();
 
             this.extractMock
-                .Setup(p => p.ExtartInfo(It.IsAny<FileInfo[]>()))
+                .Setup(p => p.ExtractInfo(It.IsAny<FileInfo[]>()))
                 .Returns(mapsdata);
             this.sut = new Engine(this.loggerMock.Object, this.searchMapMock.Object, this.extractMock.Object, this.searchFilesMock.Object);
 

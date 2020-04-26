@@ -9,7 +9,7 @@ namespace mindmap_search.FolderCrawl
     /// <summary>
     /// Class for extraging data from maps.
     /// </summary>
-    public class ExtractInfoFromMaps :IExtractInfoFromMaps 
+    public class ExtractInfoFromMaps : IExtractInfoFromMaps
     {
         private readonly ILogger logger;
         private readonly IMindMapType mindMapType;
@@ -28,9 +28,9 @@ namespace mindmap_search.FolderCrawl
         /// <summary>
         /// Extracts info from maps
         /// </summary>
-        /// <param name="fileInfos">maps file info</param>
-        /// <returns>maps data</returns>
-        public List<MapData> ExtartInfo(FileInfo[] fileInfos)
+        /// <param name="fileInfos">maps file info.</param>
+        /// <returns>maps data.</returns>
+        public List<MapData> ExtractInfo(FileInfo[] fileInfos)
         {
             this.logger.LogDebug($"Extracting Info");
             return this.mindMapType.ExtractData(fileInfos);
