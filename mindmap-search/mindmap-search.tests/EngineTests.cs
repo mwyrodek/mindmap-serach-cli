@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using mindmap_search.FileTypes;
 using mindmap_search.FolderCrawl;
 using mindmap_search.Model;
 
@@ -75,6 +76,20 @@ namespace mindmap_search.Tests
             this.sut.FindMaps(path);
 
             this.searchMapMock.Verify(f => f.LoadMapsData(mapsdata), Times.Once);
+        }
+
+        [Fact]
+        public void Search_query_ReturnsSearchResultList()
+        {
+            var expectedResult = this.fixture.Create<List<SearchResult>>();
+            string query = "i am looking for this";
+            this.searchMapMock.Setup(s => s.FindNodesWithValue(query)).Returns(expectedResult);
+
+            this.sut = new Engine(this.loggerMock.Object, this.searchMapMock.Object, this.extractMock.Object, this.searchFilesMock.Object);
+
+            var searchResults = this.sut.Search(query);
+
+            Assert.Equal(expectedResult, searchResults);
         }
     }
 }
