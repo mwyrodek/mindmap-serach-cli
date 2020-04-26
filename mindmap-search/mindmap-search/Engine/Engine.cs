@@ -32,17 +32,19 @@ namespace mindmap_search.Engine
             this.searchFiles = searchFiles;
         }
 
+        /// <inheritdoc/>
         public void FindMaps(string path)
         {
-            logger.LogInformation($"Searching for maps in {path}");
-            var findAllMaps = searchFiles.FindAllMaps(path);
-            var extartInfo = extract.ExtartInfo(findAllMaps);
-            searchMaps.LoadMapsData(extartInfo);
+            this.logger.LogInformation($"Searching for maps in {path}");
+            var findAllMaps = this.searchFiles.FindAllMaps(path);
+            var extartInfo = this.extract.ExtartInfo(findAllMaps);
+            this.searchMaps.LoadMapsData(extartInfo);
         }
 
-        public List<SearchResult> Search(string querry)
+        /// <inheritdoc/>
+        public List<SearchResult> Search(string query)
         {
-            return searchMaps.FindNodesWithValue(querry);
+            return this.searchMaps.FindNodesWithValue(query);
         }
     }
 }
