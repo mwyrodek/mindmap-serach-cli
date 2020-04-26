@@ -42,7 +42,7 @@ namespace mindmap_search.MapSearch
         /// Search Loaded Maps for nodes cotainign given value
         /// </summary>
         /// <param name="searchedText">searched value</param>
-        /// <returns>resuls from maps with searched value</returns>
+        /// <returns>results from maps with searched value</returns>
         public List<SearchResult> FindNodesWithValue(string searchedText)
         {
             if (!this.mapsData.Any())
