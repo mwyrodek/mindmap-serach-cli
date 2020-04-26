@@ -8,7 +8,7 @@ namespace mindmap_search.FolderCrawl
     /// <summary>
     /// Class for searching given directory for mind maps of given type
     /// </summary>
-    public class SearchFiles
+    public class SearchFiles : ISearchFiles
     {
         private readonly ILogger logger;
         private readonly IMindMapType mindMapType;

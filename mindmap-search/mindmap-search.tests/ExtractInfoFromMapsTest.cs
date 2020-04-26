@@ -1,14 +1,11 @@
-using System.Collections.Generic;
-using System.IO;
-using mindmap_search.FileTypes;
-
 namespace mindmap_search.Tests
-{    using System.Data;
+{        using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
+    using System.IO;
     using AutoFixture;
     using AutoFixture.AutoMoq;
     using Microsoft.Extensions.Logging;
+    using mindmap_search.FileTypes;
     using mindmap_search.FolderCrawl;
     using mindmap_search.Model;
     using Moq;

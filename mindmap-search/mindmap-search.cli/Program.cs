@@ -47,25 +47,13 @@ namespace mindmap_search.cli
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                   
                     services.AddTransient<SearchCLI>();
                     services.AddScoped<IEngine, Engine.Engine>();
-                    services.AddScoped<SearchFiles>();
-                    services.AddScoped<SearchMaps>();
+                    services.AddScoped<ISearchFiles, SearchFiles>();
+                    services.AddScoped<ISearchMaps, SearchMaps>();
                     services.AddScoped<IExctrectFromArchive, ExtractFromZipArchive>();
                     services.AddScoped<IMindMapType, XmindType>();
-                    services.AddScoped<ExtractInfoFromMaps>();
+                    services.AddScoped<IExtractInfoFromMaps, ExtractInfoFromMaps>();
                 });
-
     }
 }
-
-/*opjce:
-* Ustaw Folder
-* głebokośc rekurencji.
- * 
-* folder do pracy: C:\Users\mwk\Downloads\mindmaps
- * 
-
-
-*/

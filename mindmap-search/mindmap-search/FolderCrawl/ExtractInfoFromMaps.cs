@@ -9,7 +9,7 @@ namespace mindmap_search.FolderCrawl
     /// <summary>
     /// Class for extraging data from maps.
     /// </summary>
-    public class ExtractInfoFromMaps
+    public class ExtractInfoFromMaps :IExtractInfoFromMaps 
     {
         private readonly ILogger logger;
         private readonly IMindMapType mindMapType;

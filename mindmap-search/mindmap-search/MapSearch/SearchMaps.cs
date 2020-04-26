@@ -12,7 +12,7 @@ namespace mindmap_search.MapSearch
     /// Main class used for searching the mind maps
     /// Requires loading the maps then it is possible to search.
     /// </summary>
-    public class SearchMaps
+    public class SearchMaps : ISearchMaps
     {
         private readonly ILogger logger;
         private readonly List<MapData> mapsData;
