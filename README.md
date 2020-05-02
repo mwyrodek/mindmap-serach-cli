@@ -1,2 +1,2 @@
-# mindmap-serach-cli [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X7X5144XE)
+# mindmap-serach-cli [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X7X5144XE)[![Build Status](https://dev.azure.com/maciejwyrodek/MindMapSearchTool/_apis/build/status/mwyrodek.mindmap-serach-cli?branchName=master)](https://dev.azure.com/maciejwyrodek/MindMapSearchTool/_build/latest?definitionId=7&branchName=master)[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=mwyrodek_mindmap-serach-cli)
 a small CLI desgined to search mind maps in folder for  map with specific word
